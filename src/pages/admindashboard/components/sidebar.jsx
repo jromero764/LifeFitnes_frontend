@@ -55,16 +55,16 @@ const Sidebar = () =>{
                             </Link>
                         </li>
                         <li className='py-2 w-100'>
-                        <div class="btn-group">
+                        <div className="btn-group">
                             <i className='bi bi-person-circle me-2'></i>
-                            <button type="button" class=" dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button type="button" className=" dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                 PERFIL
                             </button>
-                            <ul class="dropdown-menu">
-                                <li><a onClick={()=>{setModalChangePassword(true)}} class="dropdown-item" href="#">Cambiar Password</a></li>
-                                <li><hr class="dropdown-divider"></hr></li>
+                            <ul className="dropdown-menu">
+                                <li><a onClick={()=>{setModalChangePassword(true)}} className="dropdown-item" href="#">Cambiar Password</a></li>
+                                <li><hr className="dropdown-divider"></hr></li>
                                 <Link to='/'>
-                                    <li><a class="dropdown-item" href="#">Cerrar Sesion</a></li>
+                                    <li><a className="dropdown-item" href="#">Cerrar Sesion</a></li>
                                 </Link>
                                 
                             </ul>
