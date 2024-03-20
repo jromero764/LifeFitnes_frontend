@@ -145,7 +145,7 @@ const User_table = () => {
                     </thead>
                     <tbody>
                         {socios.map((socio) => (
-                            <tr key={socio.ci}>
+                            <tr key={socio.id}>
                                 <th scope="row">{socio.ci}</th>
                                 <td>{socio.Nombre}</td>
                                 <td>{socio.Apellido}</td>

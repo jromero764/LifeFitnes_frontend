@@ -16,7 +16,7 @@ const NewUserModal = (props) =>{
    const [inputFecha, setValueFecha] = useState();
    const [selectSexo,getvalueSexo] = useState();
    const [selectOpt,getValueOpt] = useState();
-   
+   const [id, setId] = useState()
    const [tipoNotificacion, setTipoNotificacion] = useState();
    const [mensajeNotificacion, setMensajeNotificacion] = useState();
    const [modalAvisos, setModalAvisos] = useState(false);
@@ -76,7 +76,7 @@ const NewUserModal = (props) =>{
             Opcion:selectOpt,
             password:inputPassword,
           };
-          fetch(apiUrl+'/api/Usuarios/'+ci, {
+          fetch(apiUrl+'/api/Usuarios/'+id, {
             method: 'PATCH',
             headers: {
               'Content-Type': 'application/json'
@@ -119,6 +119,7 @@ const NewUserModal = (props) =>{
               setValueCorreo(data.Mail);
               setValueTelefono(data.Telefono);
               setValueFecha(data.FechaDeNacimiento);
+              setId(data.id)
               getvalueSexo(data.Sexo);
             })
             .catch(error => {
@@ -250,7 +251,14 @@ const NewUserModal = (props) =>{
                                             <option value="Cliente">Socio</option>
                                         </select>
                                     </div>
-                                  
+                                    <div className='col-4'>
+                                        <label htmlFor="floatingInputValue7">Contraseña</label>
+                                        <input type="text" className="form-control" id="floatingInputValue7" 
+                                        //     <input type="text" className="form-control" id="floatingInputValue6" placeholder='ej: 099999999' onChange={(event) => setValueTelefono(event.target.value)}/>
+                                    
+                                        />
+                                    
+                                    </div>
                                 </form>
                         </Modal.Body>
                         <Modal.Footer>
