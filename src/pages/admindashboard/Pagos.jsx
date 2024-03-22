@@ -59,9 +59,9 @@ const Pagos = () => {
          method: 'GET'
        })
          .then(response => {
-           if (!response.ok) {
-             throw new Error('Error en la solicitud');
-           }
+          //  if (!response.ok) {
+          //    throw new Error('Error en la solicitud');
+          //  }
            return response.json();
          })
          .then(data => {

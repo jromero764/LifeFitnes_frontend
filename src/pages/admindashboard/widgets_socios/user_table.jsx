@@ -2,7 +2,7 @@ import './widgets_socios.css'
 import { useEffect, useState } from 'react';
 import NewUserModal from './new_user_modal';
 import ModalAvisos from '../../../Utils/ModalAvisos';
-
+import CircularProgress from '@mui/material/CircularProgress';
 
 const User_table = () => {
     const [socios, setSocios] = useState([]);
@@ -18,6 +18,8 @@ const User_table = () => {
     const [tipoNotificacion, setTipoNotificacion] = useState();
     const [mensajeNotificacion, setMensajeNotificacion] = useState();
     const [respuesta, setRespuesta] = useState();
+    const [loading, setLoading] = useState(false);
+
     const apiUrl = process.env.REACT_APP_API_URL;
     const peticionGet = async () => {
         const url = apiUrl + '/api/Usuarios/0';
@@ -27,6 +29,7 @@ const User_table = () => {
         }).then(res => res.json())
             .catch(error => console.error('Error:', error))
             .then(response => {
+                setLoading(false)
                 setSocios(response);
                 setTablaUsuarios(response);
             });
@@ -97,6 +100,7 @@ const User_table = () => {
         setMetodo(false);
     }
     useEffect(() => {
+        setLoading(true)
         peticionGet();
     }, [])
 
@@ -177,6 +181,7 @@ const User_table = () => {
                     />
                 </div>
             </div>
+            {loading && <CircularProgress />}
         </div>
 
     )
