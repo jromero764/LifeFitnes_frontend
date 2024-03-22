@@ -123,7 +123,7 @@ const Pagos = () => {
   
 };
    const handleHTTPGetInformacionCompleta=(inputCi)=>{   
-    handleHTTPGetUsuario(inputCi);
+    handleHTTPGetUsuario(inputCi);//done by javi
     handleHTTPGetDiasDeCuota(inputCi);
     handleHTTPGetIngresos(inputCi);
     handleHTTPGetCuotas(inputCi);
@@ -140,13 +140,24 @@ const Pagos = () => {
                      <Sidebar/>  
                 </div>
                 <div className='col-10'>
-                    <div className='d-flex py-2 justify-content-start'>
+                <div className="d-flex py-2 justify-content-start">
+                      <div className='input-group w-25'>
+                        <input type="text" className='form-control me-2' placeholder='Ingresar CI de Socio' onKeyDown={(event) => {
+                          if (event.key === 'Enter') {
+                            handleHTTPGetInformacionCompleta(event.target.value);
+                          }
+                        }} onChange={(event) => setValueCi(event.target.value)}/>
+                        <button onClick={() => handleHTTPGetInformacionCompleta(inputCi)} className='btn btn-primary'>Cargar Datos</button>
+                      </div>
+                    </div>
+                    {/* <div className='d-flex py-2 justify-content-start'>
                         <div className='input-group w-25'>
                             <input type="text" className='form-control me-2' placeholder='Ingresar CI de Socio' onChange={(event) => setValueCi(event.target.value)}/>
                             <button onClick={() => handleHTTPGetInformacionCompleta(inputCi)} className='btn btn-primary'>Cargar Datos</button>
                         </div>
                         
-                    </div>
+                    </div> */}
+                    
                     <div>
                     <ModalAvisos
                     show={modalShow}
