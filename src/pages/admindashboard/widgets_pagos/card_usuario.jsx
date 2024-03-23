@@ -19,40 +19,10 @@ const Cards = (props) => {
         vencido = true;
     }
 
-    const RegistroDeCuota = (inputCi) => {
-
+    const handleRegisterCuota = async () => {
         const data = {
-            ci: Cookies.get('Sesion'),
-            socios_ci: inputCi,
-            productos_id: 1,
-            TipoDeTransaccion: "Venta",
-        };
-        fetch(apiUrl + '/api/Transacciones', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Error en la solicitud');
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Manipula los datos de respuesta
-                handleMessage(data.respuesta);
-            })
-            .catch(error => {
-                // Maneja cualquier error de la solicitud
-                console.error(error);
-            });
-    }
-    const handleRegisterCuot = async () => {
-        const data = {
-            id_admnistrador: localStorage.getItem('id'),
-            id_clientes: props.infosocio ? props.infosocio.id : null,
+            id_admnistrador: localStorage.getItem('idAdministrador'),
+            id_clientes: props.infosocio && props.infosocio.cliente ? props.infosocio.cliente.id : null,
             ci_cliente: props.infosocio ? props.infosocio.ci : null,
             productos_id: 1,
             TipoDeTransaccion: "Venta",
@@ -61,9 +31,13 @@ const Cards = (props) => {
             let response = await registarCuotaHTTP(data)
             console.log('respuesta', response)
         } catch (error) {
-
+            console.log('Hubo un error', error)
         }
     }
+    useEffect(() => {
+        console.log('local', localStorage.getItem('id'))
+        console.log('Info Socio', props.infosocio)
+    }, [props.infosocio])
 
     return (
         <div className="card w-100 h-100 shadow-sm">
@@ -103,7 +77,7 @@ const Cards = (props) => {
                 </div>
 
                 <div className="col-2 form-floating mb-3" >
-                    <button onClick={() => RegistroDeCuota(props.infosocio.ci)} className="btn btn-primary w-100">Registrar Cuota</button>
+                    <button onClick={() => handleRegisterCuota()} className="btn btn-primary w-100">Registrar Cuota</button>
                 </div>
                 <ModalAvisos
                     show={modalShow}
@@ -147,7 +121,7 @@ const Cards = (props) => {
                                 <tr key={pago.id}>
                                     <td>{pago.FechaTransaccion}</td>
                                     <td>{pago.HoraTransaccion}</td>
-                                    <td>{pago.usuarios_ci}</td>
+                                    <td>{pago.ci}</td>
                                 </tr>
                             ))}
                         </tbody>

@@ -92,9 +92,9 @@ export default function Login() {
         console.log(response)
         if (response.respuesta == 'Se valida el ingreso') {
             console.log(response)
-            localStorage.setItem('id', response.Usuario.id)
+            localStorage.setItem('idAdministrador', response.Usuario.id)
             Cookies.set('Sesion', ci);
-            window.location = '/home'
+               window.location = '/home'
         } else {
             setError(response.respuesta);
             setVisibleDiv(true);
