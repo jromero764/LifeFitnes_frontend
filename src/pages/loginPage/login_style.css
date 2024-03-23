@@ -1,0 +1,13 @@
+.center-login {
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+  }
+.image_logo {
+  width: 25%;
+  height: 25%;  
+}
