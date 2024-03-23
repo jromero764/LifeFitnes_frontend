@@ -87,7 +87,7 @@ const Pagos = () => {
       })
       .then(data => {
         // Manipula los datos de respuesta
-        console.log('data de cuotas',data);
+        console.log('data de cuotas', data);
         setInfopago(data);
       })
       .catch(error => {
@@ -112,7 +112,7 @@ const Pagos = () => {
       })
       .then(data => {
         // Manipula los datos de respuesta
-        console.log(data);
+        console.log('data de dias de cuota', data);
         data ? setdiasDeCuota(data.diasDeCuota) : setdiasDeCuota(false);
         setdiasDeCuota(data.DiasDeCuota);
         console.log(data.DiasDeCuota);
@@ -144,10 +144,10 @@ const Pagos = () => {
           <div className='d-flex py-2 justify-content-start'>
             <div className='input-group w-25'>
               <input type="text" className='form-control me-2' placeholder='Ingresar CI de Socio' onKeyDown={(event) => {
-                          if (event.key === 'Enter') {
-                            handleHTTPGetInformacionCompleta(event.target.value);
-                          }
-                        }} />
+                if (event.key === 'Enter') {
+                  handleHTTPGetInformacionCompleta(event.target.value);
+                }
+              }} />
               <button onClick={() => handleHTTPGetInformacionCompleta(inputCi)} className='btn btn-primary'>Cargar Datos</button>
             </div>
 
