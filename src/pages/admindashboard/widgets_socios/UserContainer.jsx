@@ -28,7 +28,7 @@ export default function UserContainer() {
     };
     const handleGetUser = async () => {
         setLoading(true); // Establecer loading a true al comenzar la carga
-        console.log(loading)
+
         try {
             let response = await getAllUser();
             setAllUser(response.data);
@@ -36,7 +36,7 @@ export default function UserContainer() {
             console.error('Error fetching users:', error);
         } finally {
             setLoading(false); // Establecer loading a false después de completar la carga
-            console.log(loading)
+
         }
     }
     const handleEditUser = (user) => {
@@ -75,9 +75,9 @@ export default function UserContainer() {
         <>
             <Paper sx={{ width: '100%', overflow: 'hidden' }}>
                 <Grid container justifyContent="space-between" alignItems="center" spacing={1}>
-                    
+
                     <Grid item sx={{ marginLeft: '1%', marginTop: '0' }}>
-                    {/* <Grid item sx={{ marginRight: '5px', marginLeft: '1%' }}> */}
+                        {/* <Grid item sx={{ marginRight: '5px', marginLeft: '1%' }}> */}
                         <TextField
                             label="Buscar ..."
                             variant="standard"
@@ -88,16 +88,16 @@ export default function UserContainer() {
                     {/* <Grid item>
                         <SearchIcon />
                     </Grid> */}
-                     <Grid item sx={{ marginRight: '1%'}} >
-                         
-                        <Button variant="contained" color="success" 
+                    <Grid item sx={{ marginRight: '1%' }} >
+
+                        <Button variant="contained" color="success"
                             onClick={() => { handleNewUser() }} >
-                            <PersonAddAltIcon sx={{ marginRight: '0.5rem'}}></PersonAddAltIcon>
+                            <PersonAddAltIcon sx={{ marginRight: '0.5rem' }}></PersonAddAltIcon>
                             Crear usuario
                         </Button>
                     </Grid>
-                    
-                    
+
+
                 </Grid>
                 {/* <Grid container justifyContent="flex-end" alignItems="center" spacing={1}>
                    
