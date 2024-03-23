@@ -87,8 +87,8 @@ const Pagos = () => {
       })
       .then(data => {
         // Manipula los datos de respuesta
+        console.log('data de cuotas',data);
         setInfopago(data);
-        console.log(data);
       })
       .catch(error => {
         // Maneja cualquier error de la solicitud
