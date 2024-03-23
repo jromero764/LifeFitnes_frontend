@@ -58,19 +58,19 @@ const Cards = (props) =>{
             <div className="row card-body">
                 <div className="col-6">
                     <div className="form-floating mb-3">
-                        <input type="text" className="form-control" id="floatingInputValue2" placeholder="name@example.com" value={props.infosocio?.ci} disabled/>
+                        <input type="text" className="form-control" id="floatingInputValue2" placeholder="name@example.com" value={props.infosocio?.ci || ''} disabled/>
                         <label htmlFor="floatingInputValue2">Cédula</label>
                     </div>
                     <div className="form-floating mb-3">
-                        <input type="text" className="form-control" id="floatingInputValue1" placeholder="name@example.com" value={props.infosocio?props.infosocio.Nombre+" "+props.infosocio.Apellido:""}  disabled/>
+                        <input type="text" className="form-control" id="floatingInputValue1" placeholder="name@example.com" value={props.infosocio?props.infosocio.Nombre+" "+props.infosocio.Apellido:"" || ''}  disabled/>
                         <label htmlFor="floatingInputValue1">Nombre</label>
                     </div>
                     <div className="form-floating mb-3">
-                        <input type="text" className="form-control" id="floatingInputValue3" placeholder="name@example.com" value={props.infosocio?.Mail} disabled/>
+                        <input type="text" className="form-control" id="floatingInputValue3" placeholder="name@example.com" value={props.infosocio?.Mail || ''} disabled/>
                         <label htmlFor="floatingInputValue3">Correo</label>
                     </div>
                     <div className="form-floating mb-3">
-                        <input type="text" className="form-control" id="floatingInputValue3" placeholder="Telefono" value={props.infosocio?.Telefono} disabled/>
+                        <input type="text" className="form-control" id="floatingInputValue3" placeholder="Telefono" value={props.infosocio?.Telefono || ''} disabled/>
                         <label htmlFor="floatingInputValue3">Telefono</label>
                     </div>
                 </div>
