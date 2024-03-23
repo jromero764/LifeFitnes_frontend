@@ -102,29 +102,29 @@ export default function UserContainer() {
                 {/* <Grid container justifyContent="flex-end" alignItems="center" spacing={1}>
                    
                 </Grid> */}
-                <TableContainer sx={{ height: '100%' }}>
+                <TableContainer sx={{ height: '100%'}}>
                     <Table stickyHeader aria-label="sticky table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>
-                                    Cedula
+                        <TableHead >
+                            <TableRow >
+                                <TableCell sx={{ backgroundColor: '#01161e', color: "#ffffff" }}>
+                                    Cédula
                                 </TableCell>
-                                <TableCell>
+                                <TableCell sx={{ backgroundColor: '#01161e', color: "#ffffff"  }}>
                                     Nombre
                                 </TableCell>
-                                <TableCell>
+                                <TableCell sx={{ backgroundColor: '#01161e', color: "#ffffff"  }}>
                                     Apellido
                                 </TableCell>
-                                <TableCell>
+                                <TableCell sx={{ backgroundColor: '#01161e', color: "#ffffff"  }}>
                                     Fecha De Nacimiento
                                 </TableCell>
-                                <TableCell>
-                                    Telefono
+                                <TableCell sx={{ backgroundColor: '#01161e', color: "#ffffff"  }}>
+                                    Teléfono
                                 </TableCell>
-                                <TableCell>
+                                <TableCell sx={{ backgroundColor: '#01161e', color: "#ffffff"}}>
                                     Mail
                                 </TableCell>
-                                <TableCell sx={{ textAlign: 'center' }}>
+                                <TableCell sx={{ textAlign: 'center', backgroundColor: '#01161e', color: "#ffffff"  }}>
                                     Gestion
                                 </TableCell>
                             </TableRow>
