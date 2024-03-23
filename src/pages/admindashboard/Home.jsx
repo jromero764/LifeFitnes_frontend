@@ -4,6 +4,7 @@ import Footerbar from './components/footerbar'
 import Cards from './widgets_home/cards'
 import Charts from "./widgets_home/cards_charts"
 import Table from "./widgets_home/tables"
+
 const home = () => {
     return (
         <div className='home'>

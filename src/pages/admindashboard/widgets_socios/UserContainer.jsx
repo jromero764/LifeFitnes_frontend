@@ -1,18 +1,21 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TextField, Grid } from '@mui/material';
+import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TextField, Grid, Button } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import NewUserModal from './new_user_modal';
 import SearchIcon from '@mui/icons-material/Search';
 import { getAllUser } from '../../../Utils/apiRest';
+import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
+
 export default function UserContainer() {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [allUser, setAllUser] = useState([])
     const [searchTerm, setSearchTerm] = useState('');
     const [data, setData] = useState({})
+    const [metodo, setMetodo] = useState(false)
     const [modalShow, setModalShow] = useState(false);
     const [loading, setLoading] = useState(false);
     const handleChangePage = (event, newPage) => {
@@ -40,7 +43,15 @@ export default function UserContainer() {
         console.log(user)
         setModalShow(true)
         setData(user)
+        setMetodo(true)
     }
+
+    const handleNewUser = () => {
+        setModalShow(true)
+        // setData(user)
+        setMetodo(false)
+    }
+
     const filterUser = allUser.filter((e) => {
         const searchTermLower = searchTerm.toLowerCase();
         const ci = e.ci ? e.ci.toString().toLowerCase() : '';
@@ -63,11 +74,10 @@ export default function UserContainer() {
     return (
         <>
             <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-                <Grid container justifyContent="flex-end" alignItems="center" spacing={1}>
-                    <Grid item>
-                        <SearchIcon />
-                    </Grid>
-                    <Grid item sx={{ marginRight: '5px' }}>
+                <Grid container justifyContent="space-between" alignItems="center" spacing={1}>
+                    
+                    <Grid item sx={{ marginLeft: '1%', marginTop: '0' }}>
+                    {/* <Grid item sx={{ marginRight: '5px', marginLeft: '1%' }}> */}
                         <TextField
                             label="Buscar ..."
                             variant="standard"
@@ -75,7 +85,23 @@ export default function UserContainer() {
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                     </Grid>
+                    {/* <Grid item>
+                        <SearchIcon />
+                    </Grid> */}
+                     <Grid item sx={{ marginRight: '1%'}} >
+                         
+                        <Button variant="contained" color="success" 
+                            onClick={() => { handleNewUser() }} >
+                            <PersonAddAltIcon sx={{ marginRight: '0.5rem'}}></PersonAddAltIcon>
+                            Crear usuario
+                        </Button>
+                    </Grid>
+                    
+                    
                 </Grid>
+                {/* <Grid container justifyContent="flex-end" alignItems="center" spacing={1}>
+                   
+                </Grid> */}
                 <TableContainer sx={{ height: '100%' }}>
                     <Table stickyHeader aria-label="sticky table">
                         <TableHead>
@@ -157,6 +183,7 @@ export default function UserContainer() {
                 show={modalShow}
                 onHide={() => setModalShow(false)}
                 data={data}
+                metodo={metodo}
             />
             {loading && <CircularProgress />}
         </>

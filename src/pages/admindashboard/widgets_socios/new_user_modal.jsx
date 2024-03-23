@@ -133,7 +133,7 @@ const NewUserModal = ({ data, metodo, onHide, show }) => {
       {metodo ? (
         //-----------------------------------------------------------------SECCION UPDATE SOCIO--------------------------------------------------------------------------->
         <div>
-          <Modal.Header closeButton>
+          <Modal.Header closeButton onClick={onHide}>
             <Modal.Title id="contained-modal-title-vcenter">
               MODIFICAR SOCIO
             </Modal.Title>
@@ -185,7 +185,7 @@ const NewUserModal = ({ data, metodo, onHide, show }) => {
       ) : (
         //-----------------------------------------------------------------SECCION REGISTRO SOCIO--------------------------------------------------------------------------->
         <div>
-          <Modal.Header closeButton>
+          <Modal.Header closeButton onClick={onHide}>
             <Modal.Title id="contained-modal-title-vcenter">
               NUEVO USUARIO DEL SISTEMA
             </Modal.Title>
