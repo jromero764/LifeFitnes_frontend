@@ -12,6 +12,7 @@ export default function UserContainer() {
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [allUser, setAllUser] = useState([])
     const [searchTerm, setSearchTerm] = useState('');
+    const [data, setData] = useState({})
     const [modalShow, setModalShow] = useState(false);
     const [loading, setLoading] = useState(false);
     const handleChangePage = (event, newPage) => {
@@ -38,6 +39,7 @@ export default function UserContainer() {
     const handleEditUser = (user) => {
         console.log(user)
         setModalShow(true)
+        setData(user)
     }
     const filterUser = allUser.filter((e) => {
         const searchTermLower = searchTerm.toLowerCase();
@@ -154,7 +156,7 @@ export default function UserContainer() {
             <NewUserModal
                 show={modalShow}
                 onHide={() => setModalShow(false)}
-
+                data={data}
             />
             {loading && <CircularProgress />}
         </>
