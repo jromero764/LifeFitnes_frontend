@@ -4,7 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 import { useState, useEffect } from 'react';
 import ModalAvisos from '../../../Utils/ModalAvisos';
 import CircularProgress from '@mui/material/CircularProgress';
-import { postUser } from '../../../apiRest/UsuariosHTTP';
+import { postUser, updateUser } from '../../../apiRest/UsuariosHTTP';
 
 const NewUserModal = ({ data, metodo, onHide, show }) => {
   const apiUrl = process.env.REACT_APP_API_URL;
@@ -49,7 +49,8 @@ const NewUserModal = ({ data, metodo, onHide, show }) => {
       console.log(`Hubo un error ${error}`);
     }
   };
-  const handleUpdate = (ci) => {
+  const handleUpdate = async (id) => {
+    console.log('que recibe',id)    
     const data = {
       ci: inputCi,
       Nombre: inputName,
@@ -60,29 +61,37 @@ const NewUserModal = ({ data, metodo, onHide, show }) => {
       Sexo: selectSexo,
       Opcion: selectOpt,
       password: inputPassword,
+      id
     };
-    fetch(apiUrl + '/api/Usuarios/' + id, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Error en la solicitud');
-        }
-        return response.json();
-      })
-      .then(data => {
-        // Manipula los datos de respuesta
-        console.log(data);
-        handleNotificacion('Aviso', 'Se Modifico con exito');
-      })
-      .catch(error => {
-        // Maneja cualquier error de la solicitud
-        console.error(error);
-      });
+    try {
+      const response = await updateUser(data);
+      console.log('La respuesta es:', response.data);
+      handleNotificacion('Aviso', response.data.respuesta);
+    } catch (error) {
+      console.log(`Hubo un error ${error}`);
+    }
+    // fetch(apiUrl + '/api/Usuarios/' + id, {
+    //   method: 'PATCH',
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    //   body: JSON.stringify(data)
+    // })
+    //   .then(response => {
+    //     if (!response.ok) {
+    //       throw new Error('Error en la solicitud');
+    //     }
+    //     return response.json();
+    //   })
+    //   .then(data => {
+    //     // Manipula los datos de respuesta
+    //     console.log(data);
+    //     handleNotificacion('Aviso', 'Se Modifico con exito');
+    //   })
+    //   .catch(error => {
+    //     // Maneja cualquier error de la solicitud
+    //     console.error(error);
+    //   });
 
   };
 

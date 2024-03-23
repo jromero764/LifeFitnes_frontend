@@ -17,3 +17,19 @@ export const postUser = (data) => {
             }
         })
 }
+
+// export const updateUser = (inputCi) => {
+//     return axios.put(`${apiUrl}/Usuarios`, inputCi, {
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             }
+//         })
+// }
+
+export const updateUser = (data) => {
+    return axios.patch(`${apiUrl}/Usuarios/${data.id}`, data, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+}
