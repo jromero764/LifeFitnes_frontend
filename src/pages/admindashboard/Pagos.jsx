@@ -123,7 +123,7 @@ const Pagos = () => {
   
 };
    const handleHTTPGetInformacionCompleta=(inputCi)=>{   
-    handleHTTPGetUsuario(inputCi);//done by javi
+    handleHTTPGetUsuario(inputCi);
     handleHTTPGetDiasDeCuota(inputCi);
     handleHTTPGetIngresos(inputCi);
     handleHTTPGetCuotas(inputCi);
