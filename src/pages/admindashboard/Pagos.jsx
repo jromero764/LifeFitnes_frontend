@@ -124,8 +124,8 @@ const Pagos = () => {
 };
    const handleHTTPGetInformacionCompleta=(inputCi)=>{   
     handleHTTPGetUsuario(inputCi);
-    handleHTTPGetDiasDeCuota(inputCi);
     handleHTTPGetIngresos(inputCi);
+    handleHTTPGetDiasDeCuota(inputCi);
     handleHTTPGetCuotas(inputCi);
     
     

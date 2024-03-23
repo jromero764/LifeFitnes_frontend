@@ -5,10 +5,9 @@ import { useState, useEffect } from 'react';
 import ModalAvisos from '../../../Utils/ModalAvisos';
 import CircularProgress from '@mui/material/CircularProgress';
 
-const NewUserModal = (props) => {
+const NewUserModal = ({ data, metodo, onHide, show }) => {
   const apiUrl = process.env.REACT_APP_API_URL;
   const [inputCi, setValueCi] = useState();
-  const [modalShow, setModalShow] = useState();
   const [inputName, setValueName] = useState();
   const [inputApellido, setValueApellido] = useState();
   const [inputCorreo, setValueCorreo] = useState();
@@ -101,39 +100,23 @@ const NewUserModal = (props) => {
       });
 
   };
-  const handleGetHTTPUsuario = (ci) => {
-    fetch(apiUrl + '/api/Usuarios/' + ci, {
-      method: 'GET'
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Error en la solicitud');
-        }
-        return response.json();
-      })
-      .then(data => {
-        // Manipula los datos de respuesta
-        console.log(data);
-        setValueCi(data.ci);
-        setValueName(data.Nombre);
-        setValueApellido(data.Apellido);
-        setValueCorreo(data.Mail);
-        setValueTelefono(data.Telefono);
-        setValueFecha(data.FechaDeNacimiento);
-        setId(data.id)
-        getvalueSexo(data.Sexo);
-      })
-      .catch(error => {
-        // Maneja cualquier error de la solicitud
-        console.error(error);
-      });
 
-  };
-  useEffect(() => { handleGetHTTPUsuario(props.ci); }, [props.metodo])
+  useEffect(() => {
+
+    setValueCi(data.ci);
+    setValueName(data.Nombre);
+    setValueApellido(data.Apellido);
+    setValueCorreo(data.Mail);
+    setValueTelefono(data.Telefono);
+    setValueFecha(data.FechaDeNacimiento);
+    setId(data.id)
+    getvalueSexo(data.Sexo);
+  }, [data])
+
 
   return (
     <Modal
-      {...props}
+      show={show}
       size="xl"
       aria-labelledby="contained-modal-title-vcenter"
       centered
@@ -147,7 +130,7 @@ const NewUserModal = (props) => {
         setRespuesta={setRespuesta}
 
       />
-      {props.metodo ? (
+      {metodo ? (
         //-----------------------------------------------------------------SECCION UPDATE SOCIO--------------------------------------------------------------------------->
         <div>
           <Modal.Header closeButton>
@@ -195,8 +178,8 @@ const NewUserModal = (props) => {
             </form>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="success" onClick={() => handleUpdate(props.ci)}> Actualizar Datos </Button>
-            <Button onClick={props.onHide}>Cerrar</Button>
+            <Button variant="success" onClick={() => handleUpdate(data.id)}> Actualizar Datos </Button>
+            <Button onClick={onHide}>Cerrar</Button>
           </Modal.Footer>
         </div>
       ) : (
@@ -263,7 +246,7 @@ const NewUserModal = (props) => {
           </Modal.Body>
           <Modal.Footer>
             <Button variant="success" onClick={() => handleRegister()}> Crear nuevo </Button>
-            <Button onClick={props.onHide}>Cerrar</Button>
+            <Button onClick={onHide}>Cerrar</Button>
           </Modal.Footer>
         </div>
       )}
