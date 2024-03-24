@@ -4,6 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 import { useState, useEffect } from 'react';
 import ModalAvisos from '../../../Utils/ModalAvisos';
 import CircularProgress from '@mui/material/CircularProgress';
+import { postUser, updateUser } from '../../../apiRest/UsuariosHTTP';
 
 const NewUserModal = ({ data, metodo, onHide, show }) => {
   const apiUrl = process.env.REACT_APP_API_URL;
@@ -28,7 +29,7 @@ const NewUserModal = ({ data, metodo, onHide, show }) => {
     setModalAvisos(true);
 
   }
-  const handleRegister = () => {
+  const handleRegister = async () => {
     const data = {
       ci: inputCi,
       Nombre: inputName,
@@ -40,31 +41,16 @@ const NewUserModal = ({ data, metodo, onHide, show }) => {
       Opcion: selectOpt,
       password: inputPassword,
     };
-    fetch(apiUrl + '/api/Usuarios', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Error en la solicitud');
-        }
-        return response.json();
-      })
-      .then(data => {
-        // Manipula los datos de respuesta
-        console.log(data);
-        handleNotificacion('AVISO', data.respuesta);
-      })
-      .catch(error => {
-        // Maneja cualquier error de la solicitud
-        console.error(error);
-      });
-
+    try {
+      const response = await postUser(data);
+      console.log('La respuesta es:', response.data);
+      handleNotificacion('Aviso', 'Usuario creado con éxito');
+    } catch (error) {
+      console.log(`Hubo un error ${error}`);
+    }
   };
-  const handleUpdate = (ci) => {
+  const handleUpdate = async (id) => {
+    console.log('que recibe',id)    
     const data = {
       ci: inputCi,
       Nombre: inputName,
@@ -75,29 +61,15 @@ const NewUserModal = ({ data, metodo, onHide, show }) => {
       Sexo: selectSexo,
       Opcion: selectOpt,
       password: inputPassword,
+      id
     };
-    fetch(apiUrl + '/api/Usuarios/' + id, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Error en la solicitud');
-        }
-        return response.json();
-      })
-      .then(data => {
-        // Manipula los datos de respuesta
-        console.log(data);
-        handleNotificacion('Aviso', 'Se Modifico con exito');
-      })
-      .catch(error => {
-        // Maneja cualquier error de la solicitud
-        console.error(error);
-      });
+    try {
+      const response = await updateUser(data);
+      console.log('La respuesta es:', response.data);
+      handleNotificacion('Aviso', response.data.respuesta);
+    } catch (error) {
+      console.log(`Hubo un error ${error}`);
+    }
 
   };
 

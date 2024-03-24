@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import NewUserModal from './new_user_modal';
 import ModalAvisos from '../../../Utils/ModalAvisos';
 import CircularProgress from '@mui/material/CircularProgress';
+import ModalDelete from '../../../Utils/ModalDelete';
 
 const User_table = () => {
     const [socios, setSocios] = useState([]);
@@ -179,6 +180,11 @@ const User_table = () => {
                         respuesta={respuesta}
                         setRespuesta={setRespuesta}
                     />
+                    <ModalDelete
+                    setSocios={setSocios}
+                    >
+
+                    </ModalDelete>
                 </div>
             </div>
             {loading && <CircularProgress />}

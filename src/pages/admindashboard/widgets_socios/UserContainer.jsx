@@ -8,6 +8,9 @@ import NewUserModal from './new_user_modal';
 import SearchIcon from '@mui/icons-material/Search';
 import { getAllUser } from '../../../Utils/apiRest';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
+import ModalDelete from '../../../Utils/ModalDelete'
+import { deleteUser } from '../../../apiRest/UsuariosHTTP';
+
 
 export default function UserContainer() {
     const [page, setPage] = React.useState(0);
@@ -16,8 +19,16 @@ export default function UserContainer() {
     const [searchTerm, setSearchTerm] = useState('');
     const [data, setData] = useState({})
     const [metodo, setMetodo] = useState(false)
-    const [modalShow, setModalShow] = useState(false);
+    const [ modalShow, setModalShow] = useState(false);
+    const [ modalDelete, setModalDelete] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [flagDelete, setFlagDelete] = useState(false)
+    // const handleNotificacion=(tipo,mensaje)=>{
+    //     setTipoNotificacion(tipo);
+    //     setMensajeNotificacion(mensaje);
+    //     setModalShow(false);
+    //     setModalDelete(true);    
+    // }
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
@@ -52,6 +63,20 @@ export default function UserContainer() {
         setMetodo(false)
     }
 
+    // const handleDeleteUser = (user) => {
+        // setModalShow(true)
+        // setData(user)
+        // setMetodo(false)
+    // }
+
+    const handleDeleteUser =  (user) => {
+        console.log(user)
+        // setLoading(true); // Establecer loading a true al comenzar la eliminación
+        setModalDelete(true)
+        setData(user)
+    }
+    
+
     const filterUser = allUser.filter((e) => {
         const searchTermLower = searchTerm.toLowerCase();
         const ci = e.ci ? e.ci.toString().toLowerCase() : '';
@@ -62,15 +87,25 @@ export default function UserContainer() {
         return ci.includes(searchTermLower) || nombre.includes(searchTermLower) || apellido.includes(searchTermLower);
     })
     useEffect(() => {
-        setLoading(true);
         handleGetUser()
     }, [])
+
+
+
     useEffect(() => {
         setAllUser(filterUser)
         if (searchTerm == '') {
             handleGetUser()
         }
     }, [searchTerm])
+
+    useEffect(() => {
+        console.log('flagDelete',flagDelete)
+        if(flagDelete){
+            handleGetUser()
+            // console.log(allUser)
+        }
+    }, [flagDelete])
     return (
         <>
             <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -102,29 +137,29 @@ export default function UserContainer() {
                 {/* <Grid container justifyContent="flex-end" alignItems="center" spacing={1}>
                    
                 </Grid> */}
-                <TableContainer sx={{ height: '100%' }}>
+                <TableContainer sx={{ height: '100%'}}>
                     <Table stickyHeader aria-label="sticky table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>
-                                    Cedula
+                        <TableHead >
+                            <TableRow >
+                                <TableCell sx={{ backgroundColor: '#01161e', color: "#ffffff" }}>
+                                    Cédula
                                 </TableCell>
-                                <TableCell>
+                                <TableCell sx={{ backgroundColor: '#01161e', color: "#ffffff"  }}>
                                     Nombre
                                 </TableCell>
-                                <TableCell>
+                                <TableCell sx={{ backgroundColor: '#01161e', color: "#ffffff"  }}>
                                     Apellido
                                 </TableCell>
-                                <TableCell>
+                                <TableCell sx={{ backgroundColor: '#01161e', color: "#ffffff"  }}>
                                     Fecha De Nacimiento
                                 </TableCell>
-                                <TableCell>
-                                    Telefono
+                                <TableCell sx={{ backgroundColor: '#01161e', color: "#ffffff"  }}>
+                                    Teléfono
                                 </TableCell>
-                                <TableCell>
+                                <TableCell sx={{ backgroundColor: '#01161e', color: "#ffffff"}}>
                                     Mail
                                 </TableCell>
-                                <TableCell sx={{ textAlign: 'center' }}>
+                                <TableCell sx={{ textAlign: 'center', backgroundColor: '#01161e', color: "#ffffff"  }}>
                                     Gestion
                                 </TableCell>
                             </TableRow>
@@ -160,6 +195,7 @@ export default function UserContainer() {
                                                 />
                                                 <Box marginLeft={1} marginRight={1}>
                                                     <DeleteForeverIcon
+                                                        onClick={() => { handleDeleteUser(user)}}
                                                         sx={{ cursor: 'pointer' }}
                                                     /></Box>
                                             </TableCell>
@@ -175,8 +211,8 @@ export default function UserContainer() {
                     count={allUser.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
+                    handleChangePage={handleChangePage}
+                    // onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Paper >
             <NewUserModal
@@ -185,6 +221,13 @@ export default function UserContainer() {
                 data={data}
                 metodo={metodo}
             />
+            <ModalDelete
+            show={modalDelete}
+            data={data}
+            setModalDelete={setModalDelete}
+            setFlagDelete={setFlagDelete}
+            />
+
             {loading && <CircularProgress />}
         </>
     );
