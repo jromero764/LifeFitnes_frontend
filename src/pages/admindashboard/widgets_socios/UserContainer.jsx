@@ -19,8 +19,8 @@ export default function UserContainer() {
     const [searchTerm, setSearchTerm] = useState('');
     const [data, setData] = useState({})
     const [metodo, setMetodo] = useState(false)
-    const [ modalShow, setModalShow] = useState(false);
-    const [ modalDelete, setModalDelete] = useState(false);
+    const [modalShow, setModalShow] = useState(false);
+    const [modalDelete, setModalDelete] = useState(false);
     const [loading, setLoading] = useState(false);
     const [flagDelete, setFlagDelete] = useState(false)
     // const handleNotificacion=(tipo,mensaje)=>{
@@ -64,18 +64,18 @@ export default function UserContainer() {
     }
 
     // const handleDeleteUser = (user) => {
-        // setModalShow(true)
-        // setData(user)
-        // setMetodo(false)
+    // setModalShow(true)
+    // setData(user)
+    // setMetodo(false)
     // }
 
-    const handleDeleteUser =  (user) => {
+    const handleDeleteUser = (user) => {
         console.log(user)
         // setLoading(true); // Establecer loading a true al comenzar la eliminación
         setModalDelete(true)
         setData(user)
     }
-    
+
 
     const filterUser = allUser.filter((e) => {
         const searchTermLower = searchTerm.toLowerCase();
@@ -100,9 +100,10 @@ export default function UserContainer() {
     }, [searchTerm])
 
     useEffect(() => {
-        console.log('flagDelete',flagDelete)
-        if(flagDelete){
+        console.log('flagDelete', flagDelete)
+        if (flagDelete) {
             handleGetUser()
+            setFlagDelete(false)
             // console.log(allUser)
         }
     }, [flagDelete])
@@ -137,29 +138,29 @@ export default function UserContainer() {
                 {/* <Grid container justifyContent="flex-end" alignItems="center" spacing={1}>
                    
                 </Grid> */}
-                <TableContainer sx={{ height: '100%'}}>
+                <TableContainer sx={{ height: '100%' }}>
                     <Table stickyHeader aria-label="sticky table">
                         <TableHead >
                             <TableRow >
                                 <TableCell sx={{ backgroundColor: '#01161e', color: "#ffffff" }}>
                                     Cédula
                                 </TableCell>
-                                <TableCell sx={{ backgroundColor: '#01161e', color: "#ffffff"  }}>
+                                <TableCell sx={{ backgroundColor: '#01161e', color: "#ffffff" }}>
                                     Nombre
                                 </TableCell>
-                                <TableCell sx={{ backgroundColor: '#01161e', color: "#ffffff"  }}>
+                                <TableCell sx={{ backgroundColor: '#01161e', color: "#ffffff" }}>
                                     Apellido
                                 </TableCell>
-                                <TableCell sx={{ backgroundColor: '#01161e', color: "#ffffff"  }}>
+                                <TableCell sx={{ backgroundColor: '#01161e', color: "#ffffff" }}>
                                     Fecha De Nacimiento
                                 </TableCell>
-                                <TableCell sx={{ backgroundColor: '#01161e', color: "#ffffff"  }}>
+                                <TableCell sx={{ backgroundColor: '#01161e', color: "#ffffff" }}>
                                     Teléfono
                                 </TableCell>
-                                <TableCell sx={{ backgroundColor: '#01161e', color: "#ffffff"}}>
+                                <TableCell sx={{ backgroundColor: '#01161e', color: "#ffffff" }}>
                                     Mail
                                 </TableCell>
-                                <TableCell sx={{ textAlign: 'center', backgroundColor: '#01161e', color: "#ffffff"  }}>
+                                <TableCell sx={{ textAlign: 'center', backgroundColor: '#01161e', color: "#ffffff" }}>
                                     Gestion
                                 </TableCell>
                             </TableRow>
@@ -195,7 +196,7 @@ export default function UserContainer() {
                                                 />
                                                 <Box marginLeft={1} marginRight={1}>
                                                     <DeleteForeverIcon
-                                                        onClick={() => { handleDeleteUser(user)}}
+                                                        onClick={() => { handleDeleteUser(user) }}
                                                         sx={{ cursor: 'pointer' }}
                                                     /></Box>
                                             </TableCell>
@@ -211,8 +212,8 @@ export default function UserContainer() {
                     count={allUser.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
-                    handleChangePage={handleChangePage}
-                    // onRowsPerPageChange={handleChangeRowsPerPage}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Paper >
             <NewUserModal
@@ -222,10 +223,10 @@ export default function UserContainer() {
                 metodo={metodo}
             />
             <ModalDelete
-            show={modalDelete}
-            data={data}
-            setModalDelete={setModalDelete}
-            setFlagDelete={setFlagDelete}
+                show={modalDelete}
+                data={data}
+                setModalDelete={setModalDelete}
+                setFlagDelete={setFlagDelete}
             />
 
             {loading && <CircularProgress />}
