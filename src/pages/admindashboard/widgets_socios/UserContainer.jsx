@@ -8,6 +8,9 @@ import NewUserModal from './new_user_modal';
 import SearchIcon from '@mui/icons-material/Search';
 import { getAllUser } from '../../../Utils/apiRest';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
+import ModalDelete from '../../../Utils/ModalDelete'
+import { deleteUser } from '../../../apiRest/UsuariosHTTP';
+
 
 export default function UserContainer() {
     const [page, setPage] = React.useState(0);
@@ -16,8 +19,16 @@ export default function UserContainer() {
     const [searchTerm, setSearchTerm] = useState('');
     const [data, setData] = useState({})
     const [metodo, setMetodo] = useState(false)
-    const [modalShow, setModalShow] = useState(false);
+    const [ modalShow, setModalShow] = useState(false);
+    const [ modalDelete, setModalDelete] = useState(false);
     const [loading, setLoading] = useState(false);
+
+    // const handleNotificacion=(tipo,mensaje)=>{
+    //     setTipoNotificacion(tipo);
+    //     setMensajeNotificacion(mensaje);
+    //     setModalShow(false);
+    //     setModalDelete(true);    
+    // }
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
@@ -51,6 +62,20 @@ export default function UserContainer() {
         // setData(user)
         setMetodo(false)
     }
+
+    // const handleDeleteUser = (user) => {
+        // setModalShow(true)
+        // setData(user)
+        // setMetodo(false)
+    // }
+
+    const handleDeleteUser =  (user) => {
+        console.log(user)
+        // setLoading(true); // Establecer loading a true al comenzar la eliminación
+        setModalDelete(true)
+        setData(user)
+    }
+    
 
     const filterUser = allUser.filter((e) => {
         const searchTermLower = searchTerm.toLowerCase();
@@ -160,6 +185,7 @@ export default function UserContainer() {
                                                 />
                                                 <Box marginLeft={1} marginRight={1}>
                                                     <DeleteForeverIcon
+                                                        onClick={() => { handleDeleteUser(user)}}
                                                         sx={{ cursor: 'pointer' }}
                                                     /></Box>
                                             </TableCell>
@@ -185,6 +211,12 @@ export default function UserContainer() {
                 data={data}
                 metodo={metodo}
             />
+            <ModalDelete
+            show={modalDelete}
+            data={data}
+            setModalDelete={setModalDelete}
+            />
+
             {loading && <CircularProgress />}
         </>
     );

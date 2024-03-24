@@ -33,3 +33,8 @@ export const updateUser = (data) => {
             }
         })
 }
+
+export const deleteUser = (id) => {
+    return axios.delete(`${apiUrl}/Usuarios/${id}`);
+}
+

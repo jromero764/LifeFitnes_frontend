@@ -70,28 +70,6 @@ const NewUserModal = ({ data, metodo, onHide, show }) => {
     } catch (error) {
       console.log(`Hubo un error ${error}`);
     }
-    // fetch(apiUrl + '/api/Usuarios/' + id, {
-    //   method: 'PATCH',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify(data)
-    // })
-    //   .then(response => {
-    //     if (!response.ok) {
-    //       throw new Error('Error en la solicitud');
-    //     }
-    //     return response.json();
-    //   })
-    //   .then(data => {
-    //     // Manipula los datos de respuesta
-    //     console.log(data);
-    //     handleNotificacion('Aviso', 'Se Modifico con exito');
-    //   })
-    //   .catch(error => {
-    //     // Maneja cualquier error de la solicitud
-    //     console.error(error);
-    //   });
 
   };
 
