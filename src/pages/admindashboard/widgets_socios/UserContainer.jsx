@@ -22,7 +22,7 @@ export default function UserContainer() {
     const [ modalShow, setModalShow] = useState(false);
     const [ modalDelete, setModalDelete] = useState(false);
     const [loading, setLoading] = useState(false);
-
+    const [flagDelete, setFlagDelete] = useState(false)
     // const handleNotificacion=(tipo,mensaje)=>{
     //     setTipoNotificacion(tipo);
     //     setMensajeNotificacion(mensaje);
@@ -87,15 +87,25 @@ export default function UserContainer() {
         return ci.includes(searchTermLower) || nombre.includes(searchTermLower) || apellido.includes(searchTermLower);
     })
     useEffect(() => {
-        setLoading(true);
         handleGetUser()
     }, [])
+
+
+
     useEffect(() => {
         setAllUser(filterUser)
         if (searchTerm == '') {
             handleGetUser()
         }
     }, [searchTerm])
+
+    useEffect(() => {
+        console.log('flagDelete',flagDelete)
+        if(flagDelete){
+            handleGetUser()
+            // console.log(allUser)
+        }
+    }, [flagDelete])
     return (
         <>
             <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -201,8 +211,8 @@ export default function UserContainer() {
                     count={allUser.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
+                    handleChangePage={handleChangePage}
+                    // onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Paper >
             <NewUserModal
@@ -215,6 +225,7 @@ export default function UserContainer() {
             show={modalDelete}
             data={data}
             setModalDelete={setModalDelete}
+            setFlagDelete={setFlagDelete}
             />
 
             {loading && <CircularProgress />}

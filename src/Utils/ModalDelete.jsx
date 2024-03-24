@@ -10,7 +10,7 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import { deleteUser } from '../apiRest/UsuariosHTTP';
-
+import { handleGetUser } from '../pages/admindashboard/widgets_socios/UserContainer';
 // import setModalDelete from '../pages/admindashboard';
 // import React, { useState } from 'react';
 
@@ -24,7 +24,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-export default function ModalDelete({show, data, setModalDelete}) {
+export default function ModalDelete({show, data, setModalDelete, setFlagDelete}) {
   // const [open, setOpen] = useState(false);
 
   // const handleClickOpen = () => {
@@ -56,6 +56,7 @@ const [dataRecibed, setDataRecibed] = useState({})
     console.log('que recibe',data)    
     try {
       const response = await deleteUser(data.id);
+      setFlagDelete(true)
       console.log('La respuesta es:', response);
       handleNotificacion('Aviso', response.data.respuesta);
     } catch (error) {
@@ -64,6 +65,10 @@ const [dataRecibed, setDataRecibed] = useState({})
 
   };
 
+  const handleDeleteClick = () => {
+    handleDelete();
+    handleClose();
+  };
 
   return (
     <React.Fragment>
@@ -105,10 +110,10 @@ const [dataRecibed, setDataRecibed] = useState({})
           </Typography> */}
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleDelete}>
+          <Button autoFocus sx={{ background: '#d00000', color: 'white', '&:hover': {backgroundColor: 'darkred'} }} onClick={handleDeleteClick}>
             Eliminar
           </Button>
-          <Button autoFocus onClick={handleClose}>
+          <Button autoFocus sx={{ background: '#023e8a', color: 'white', '&:hover': {backgroundColor: '#023047'} }} onClick={handleClose}>
             No
           </Button>
         </DialogActions>
