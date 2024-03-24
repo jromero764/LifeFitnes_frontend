@@ -2,9 +2,10 @@ import Navbar from "./components/navbar"
 import Sidebar from './components/sidebar'
 import Footerbar from './components/footerbar'
 import Cards from "./widgets_pagos/card_usuario"
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Spinner } from "react-bootstrap";
 import ModalAvisos from "../../Utils/ModalAvisos";
+import AlertDialog from "../../Utils/DialogAvisos";
 
 const Pagos = () => {
   const apiUrl = process.env.REACT_APP_API_URL;
@@ -12,17 +13,17 @@ const Pagos = () => {
   const [infosocio, setInfosocio] = useState();
   const [infopago, setInfopago] = useState();
   const [infoingresos, setInfoingresos] = useState();
-
+  const [loading, setLoading] = useState(false)
   const [modalShow, setModalShow] = useState(false);
   const [titulo, settitulo] = useState();
-  const [mensaje, setmensaje] = useState();
+  const [mensaje, setMensaje] = useState();
   const [diasDeCuota, setdiasDeCuota] = useState();
-
+  const [openDialogAviso, setOpenDialogAviso] = useState(false)
   const [tipoNotificacion, setTipoNotificacion] = useState();
   const [mensajeNotificacion, setMensajeNotificacion] = useState();
   const [respuesta, setRespuesta] = useState();
   const [modalAvisos, setModalAvisos] = useState(false);
-
+  const [refresh, setRefresh] = useState({})
   const handleNotificacion = (tipo, mensaje) => {
     setTipoNotificacion(tipo);
     setMensajeNotificacion(mensaje);
@@ -128,59 +129,78 @@ const Pagos = () => {
     handleHTTPGetIngresos(inputCi);
     handleHTTPGetDiasDeCuota(inputCi);
     handleHTTPGetCuotas(inputCi);
-
-
   }
+
+  //Vuelve a realizar la peticion porque se registro la cuota del usuario
+  useEffect(() => {
+    console.log(refresh)
+    setLoading(true)
+    if (refresh.estado) {
+      handleHTTPGetInformacionCompleta(refresh.ci)
+      setMensaje('Se reigstra la cuota')
+      setOpenDialogAviso(true)
+    }
+  }, [refresh])
+
   return (
-    <div className='home'>
-      <div className='row'>
-        <div className='col-12 bg-dark'>
-          <Navbar />
-        </div>
-        <div className='col-2 text-bg-dark'>
-          <Sidebar />
-        </div>
-        <div className='col-10'>
-          <div className='d-flex py-2 justify-content-start'>
-            <div className='input-group w-25'>
-              <input type="text" className='form-control me-2' placeholder='Ingresar CI de Socio' onKeyDown={(event) => {
-                if (event.key === 'Enter') {
-                  handleHTTPGetInformacionCompleta(event.target.value);
-                }
-              }} />
-              <button onClick={() => handleHTTPGetInformacionCompleta(inputCi)} className='btn btn-primary'>Cargar Datos</button>
+    <>
+      <div className='home'>
+        <div className='row'>
+          <div className='col-12 bg-dark'>
+            <Navbar />
+          </div>
+          <div className='col-2 text-bg-dark'>
+            <Sidebar />
+          </div>
+          <div className='col-10'>
+            <div className='d-flex py-2 justify-content-start'>
+              <div className='input-group w-25'>
+                <input type="text" className='form-control me-2' placeholder='Ingresar CI de Socio' onKeyDown={(event) => {
+                  if (event.key === 'Enter') {
+                    handleHTTPGetInformacionCompleta(event.target.value);
+                  }
+                }} />
+                <button onClick={() => handleHTTPGetInformacionCompleta(inputCi)} className='btn btn-primary'>Cargar Datos</button>
+              </div>
+
             </div>
-
+            <div>
+              <ModalAvisos
+                show={modalShow}
+                onHide={() => setModalShow(false)}
+                titulo={titulo}
+                mensaje={mensaje}
+              />
+              <Cards
+                infoingresos={infoingresos}
+                infopago={infopago}
+                infosocio={infosocio}
+                diasDeCuota={diasDeCuota}
+                setRefresh={setRefresh}
+                refresh={refresh}
+              />
+            </div>
           </div>
-          <div>
-            <ModalAvisos
-              show={modalShow}
-              onHide={() => setModalShow(false)}
-              titulo={titulo}
-              mensaje={mensaje}
-            />
-            <Cards
-              infoingresos={infoingresos}
-              infopago={infopago}
-              infosocio={infosocio}
-              diasDeCuota={diasDeCuota}
-            />
+          <div className='col-12 footer text-bg-dark'>
+            <Footerbar />
           </div>
         </div>
-        <div className='col-12 footer text-bg-dark'>
-          <Footerbar />
-        </div>
+        <ModalAvisos
+          show={modalAvisos}
+          onHide={() => setModalAvisos(false)}
+          tipo={tipoNotificacion}
+          mensaje={mensajeNotificacion}
+          respuesta={respuesta}
+          setRespuesta={setRespuesta}
+        />
       </div>
-      <ModalAvisos
-        show={modalAvisos}
-        onHide={() => setModalAvisos(false)}
-        tipo={tipoNotificacion}
-        mensaje={mensajeNotificacion}
-        respuesta={respuesta}
-        setRespuesta={setRespuesta}
+      <AlertDialog
+        open={openDialogAviso}
+        onHide={() => { setOpenDialogAviso(false) }}
+        mensaje={mensaje}
       />
-    </div>
-
+      {loading && <Spinner />}
+    </>
   )
 
 };

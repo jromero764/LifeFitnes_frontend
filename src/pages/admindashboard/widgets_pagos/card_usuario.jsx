@@ -21,7 +21,7 @@ const Cards = (props) => {
 
     const handleRegisterCuota = async () => {
         const data = {
-            id_admnistrador: localStorage.getItem('idAdministrador'),
+            id_administrador: localStorage.getItem('idAdministrador'),
             id_clientes: props.infosocio && props.infosocio.cliente ? props.infosocio.cliente.id : null,
             ci_cliente: props.infosocio ? props.infosocio.ci : null,
             productos_id: 1,
@@ -30,6 +30,11 @@ const Cards = (props) => {
         try {
             let response = await registarCuotaHTTP(data)
             console.log('respuesta', response)
+            let fixRefresh = {
+                estado: true,
+                ci: props.infosocio.ci
+            }
+            props.setRefresh(fixRefresh)
         } catch (error) {
             console.log('Hubo un error', error)
         }
