@@ -50,7 +50,7 @@ const NewUserModal = ({ data, metodo, onHide, show }) => {
     }
   };
   const handleUpdate = async (id) => {
-    console.log('que recibe',id)    
+    console.log('que recibe', id)
     const data = {
       ci: inputCi,
       Nombre: inputName,

@@ -240,9 +240,9 @@ const Transaction_table = () => {
 
                                             <th scope="row">{venta.id}</th>
                                             <th>{venta.producto.Nombre}</th>
-                                            <th>{venta.administrador.usuarios.Nombre}</th>
-                                            <th>{venta.cliente.usuario.ci}</th>
-                                            <th>{venta.cliente.usuario.Nombre} {venta.cliente.usuario.Apellido}</th>
+                                            <th>{venta.administrador ? venta.administrador.usuarios.Nombre : ''}</th>
+                                            <th>{venta.cliente? venta.cliente.usuario.ci:''}</th>
+                                            <th>{venta.cliente?venta.cliente.usuario.Nombre:''} {venta.cliente? venta.cliente.usuario.Apellido:''}</th>
                                             <th>{venta.HoraTransaccion}</th>
                                             <th>{venta.producto.PrecioVenta}</th>
                                             <th>
