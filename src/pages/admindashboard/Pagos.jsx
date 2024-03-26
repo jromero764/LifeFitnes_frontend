@@ -131,6 +131,10 @@ const Pagos = () => {
     handleHTTPGetCuotas(inputCi);
   }
 
+  const handleInputChange = (event) => {
+    setValueCi(event.target.value);
+  };
+
   //Vuelve a realizar la peticion porque se registro la cuota del usuario
   useEffect(() => {
     console.log(refresh)
@@ -155,12 +159,13 @@ const Pagos = () => {
           <div className='col-10'>
             <div className='d-flex py-2 justify-content-start'>
               <div className='input-group w-25'>
-                <input type="text" className='form-control me-2' placeholder='Ingresar CI de Socio' onKeyDown={(event) => {
+                <input type="text" className='form-control me-2' placeholder='Ingresar CI de Socio' onChange={handleInputChange} onKeyDown={(event) => {
                   if (event.key === 'Enter') {
                     handleHTTPGetInformacionCompleta(event.target.value);
                   }
                 }} />
                 <button onClick={() => handleHTTPGetInformacionCompleta(inputCi)} className='btn btn-primary'>Cargar Datos</button>
+                {/* <button onClick={() => handleHTTPGetInformacionCompleta(inputCi)} className='btn btn-primary'>Cargar Datos</button> */}
               </div>
 
             </div>
