@@ -206,12 +206,20 @@ export default function UserContainer() {
                                             <TableCell sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                 <BorderColorIcon
                                                     onClick={() => { handleEditUser(user) }}
-                                                    sx={{ cursor: 'pointer' }}
+                                                    sx={{ cursor: 'pointer', filter: 'none',
+                                                    transition: 'filter 0.3s ease',
+                                                    '&:hover': {
+                                                      filter: 'drop-shadow(0px 10px 10px #3a86ff)',
+                                                    }, }}
                                                 />
                                                 <Box marginLeft={1} marginRight={1}>
                                                     <DeleteForeverIcon
                                                         onClick={() => { handleDeleteUser(user) }}
-                                                        sx={{ cursor: 'pointer' }}
+                                                        sx={{ cursor: 'pointer', filter: 'none',
+                                                        transition: 'filter 0.3s ease',
+                                                        '&:hover': {
+                                                          filter: 'drop-shadow(0px 10px 10px #c1121f)',
+                                                        }, }}
                                                     /></Box>
                                             </TableCell>
                                         </TableRow>
