@@ -11,6 +11,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import { deleteUser } from '../apiRest/UsuariosHTTP';
 import { handleGetUser } from '../pages/admindashboard/widgets_socios/UserContainer';
+import ModalConfirmacion from './ModalConfirmacion';
+
 // import setModalDelete from '../pages/admindashboard';
 // import React, { useState } from 'react';
 
@@ -24,7 +26,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-export default function ModalDelete({show, data, setModalDelete, setFlagDelete}) {
+export default function ModalDelete({show, data, modalDelete, setModalDelete, setFlagDelete}) {
   // const [open, setOpen] = useState(false);
 
   // const handleClickOpen = () => {
@@ -36,17 +38,26 @@ export default function ModalDelete({show, data, setModalDelete, setFlagDelete})
   const [tipoNotificacion, setTipoNotificacion] = useState();
   const [mensajeNotificacion, setMensajeNotificacion] = useState();
   const [modalAvisos, setModalAvisos] = useState(false);
-const [dataRecibed, setDataRecibed] = useState({})
+  const [DeleteConfirmed, setDeleteConfirmed] = useState(false);
+  const [modalShow, setModalShow] = useState(false);
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  // const [modalDelete, setModalDelete] = useState(false);
+
+  // const [dataRecibed, setDataRecibed] = useState({})
   const handleNotificacion = (tipo, mensaje) => {
     setTipoNotificacion(tipo);
     setMensajeNotificacion(mensaje);
     setModalAvisos(true);
-
+    setShowConfirmationModal(true);
   }
 
   const handleClose = () => {
     setModalDelete(false);
   };
+
+  // const handleOpen = () => {
+  //   setModalDelete(true);
+  // };
 
 
   // const handleClose = () => {
@@ -59,6 +70,7 @@ const [dataRecibed, setDataRecibed] = useState({})
       setFlagDelete(true)
       console.log('La respuesta es:', response);
       handleNotificacion('Aviso', response.data.respuesta);
+      setDeleteConfirmed(true)
     } catch (error) {
       console.log(`Hubo un error ${error}`);
     }
@@ -68,9 +80,16 @@ const [dataRecibed, setDataRecibed] = useState({})
   const handleDeleteClick = () => {
     handleDelete();
     handleClose();
+    setModalShow(false);
   };
 
+//   const handleDeleteConfirmation = () => {
+//     setModalShow(true);
+// }
+
   return (
+    <>
+    {/* delete alert confirmation ---------------------------------------------------------------------------- */}
     <React.Fragment>
       {/* <Button variant="outlined" onClick={handleClose}>
         Open dialog
@@ -99,15 +118,6 @@ const [dataRecibed, setDataRecibed] = useState({})
           <Typography gutterBottom>
             ¿Seguro que desea eliminar este usuario?
           </Typography>
-          {/* <Typography gutterBottom>
-            Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
-            Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
-          </Typography>
-          <Typography gutterBottom>
-            Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus
-            magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec
-            ullamcorper nulla non metus auctor fringilla.
-          </Typography> */}
         </DialogContent>
         <DialogActions>
           <Button autoFocus sx={{ background: '#d00000', color: 'white', '&:hover': {backgroundColor: 'darkred'} }} onClick={handleDeleteClick}>
@@ -118,6 +128,18 @@ const [dataRecibed, setDataRecibed] = useState({})
           </Button>
         </DialogActions>
       </BootstrapDialog>
+    {/* ------------------------------------------------------------------------------------------------- */}
+    {/* confirmacion de eliminacion----------------------------------------------------------------------- */}
     </React.Fragment>
+
+    <ModalConfirmacion
+        show={showConfirmationModal} 
+        setModalShow={setShowConfirmationModal}
+        setModalDelete={setModalDelete}
+        DeleteConfirmed={DeleteConfirmed}
+        setDeleteConfirmed={setDeleteConfirmed}
+    />
+
+  </>
   );
 }

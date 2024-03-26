@@ -8,7 +8,8 @@ import NewUserModal from './new_user_modal';
 import SearchIcon from '@mui/icons-material/Search';
 import { getAllUser } from '../../../Utils/apiRest';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
-import ModalDelete from '../../../Utils/ModalDelete'
+import ModalDelete from '../../../Utils/ModalDelete';
+
 import { deleteUser } from '../../../apiRest/UsuariosHTTP';
 
 
@@ -22,7 +23,8 @@ export default function UserContainer() {
     const [modalShow, setModalShow] = useState(false);
     const [modalDelete, setModalDelete] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [flagDelete, setFlagDelete] = useState(false)
+    const [flagDelete, setFlagDelete] = useState(false);
+    const [DeleteConfirmed, setDeleteConfirmed] = useState(false);
     // const handleNotificacion=(tipo,mensaje)=>{
     //     setTipoNotificacion(tipo);
     //     setMensajeNotificacion(mensaje);
@@ -32,6 +34,10 @@ export default function UserContainer() {
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
+
+    // const handleDeleteConfirmation = () => {
+    //     setDeleteConfirmed(true);
+    // }
 
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(+event.target.value);
@@ -100,13 +106,21 @@ export default function UserContainer() {
     }, [searchTerm])
 
     useEffect(() => {
-        console.log('flagDelete', flagDelete)
+        // console.log('flagDelete', flagDelete)
         if (flagDelete) {
             handleGetUser()
             setFlagDelete(false)
             // console.log(allUser)
         }
     }, [flagDelete])
+
+    // useEffect(() => {
+    //     // console.log('flagDelete', flagDelete)
+    //     if (DeleteConfirmed) {
+    //         setDeleteConfirmed(true)
+    //         // console.log(allUser)
+    //     }
+    // }, [DeleteConfirmed])
     return (
         <>
             <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -225,10 +239,11 @@ export default function UserContainer() {
             <ModalDelete
                 show={modalDelete}
                 data={data}
+                modalDelete={modalDelete}
                 setModalDelete={setModalDelete}
                 setFlagDelete={setFlagDelete}
             />
-
+            
             {loading && <CircularProgress />}
         </>
     );
