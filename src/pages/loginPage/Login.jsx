@@ -93,6 +93,7 @@ export default function Login() {
         if (response.respuesta == 'Se valida el ingreso') {
             console.log(response)
             localStorage.setItem('idAdministrador', response.Usuario.id)
+            localStorage.setItem('Perfil',response.Perfil)
             Cookies.set('Sesion', ci);
                window.location = '/home'
         } else {
