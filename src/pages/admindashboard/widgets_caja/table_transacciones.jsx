@@ -2,8 +2,10 @@ import { useState, useEffect, Fragment } from "react";
 import NewVentaModal from "./modal_venta";
 import NewCompraModal from "./modal_compra"
 import ModalAvisos from "../../../Utils/ModalAvisos";
-import { obtenerTransaccionesHTTP } from "../../../apiRest/TransaccionesHTTP";
+import { eliminarTransaccionHTTP, obtenerTransaccionesHTTP } from "../../../apiRest/TransaccionesHTTP";
 import * as FileSaver from 'file-saver';
+import ModalConfirmationV2 from "../../../Utils/ModalConfirmationV2";
+import AlertDialog from "../../../Utils/DialogAvisos";
 import XLSX from 'sheetjs-style';
 const Transaction_table = () => {
     //-------------------------------------------------------------------INICIO DE VARIABLES------------------------------------------------------------------->
@@ -22,6 +24,10 @@ const Transaction_table = () => {
     const [id, setId] = useState();
     const [valueOption, setValueOption] = useState(true);
     const [excelData, setExcelData] = useState();
+    const [show, setShow] = useState(false)
+    const [flag, setFlag] = useState(false)
+    const [mensaje, setMensaje] = useState(false)
+    const [openDialogAviso, setOpenDialogAviso] = useState(false)
     const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
     const fileExtension = '.xlsx';
     var date = new Date(); //Fecha actual
@@ -87,28 +93,9 @@ const Transaction_table = () => {
         }
     }
     const handleDelete = (id) => {
-        fetch(apiUrl + '/api/Transacciones/' + id, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Error en la solicitud');
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Manipula los datos de respuesta
-                handleNotificacion('Aviso', data.respuesta, '');
-                console.log(data);
-            })
-            .catch(error => {
-                // Maneja cualquier error de la solicitud
-                console.error(error);
-            });
-
+        console.log(id)
+        setShow(true)
+        setId(id)
     };
     const handleNotificacion = (tipo, mensaje, id) => {
         setTipoNotificacion(tipo);
@@ -138,6 +125,27 @@ const Transaction_table = () => {
             handleDelete(id);
         }
     }, [respuesta])
+    useEffect(() => {
+        const fetchData = async () => {
+            console.log('flag', flag)
+            if (flag) {
+                try {
+                    let response = await eliminarTransaccionHTTP(id)
+                    setOpenDialogAviso(true)
+                    setMensaje(response.data.respuesta)
+
+                } catch (error) {
+                    // Maneja el error si es necesario
+                } finally {
+                    setShow(false)
+                    setFlag(false)
+                    window.location.reload()
+                }
+            }
+        };
+
+        fetchData();
+    }, [flag]);
     return (
         <Fragment>
 
@@ -241,12 +249,12 @@ const Transaction_table = () => {
                                             <th scope="row">{venta.id}</th>
                                             <th>{venta.producto.Nombre}</th>
                                             <th>{venta.administrador ? venta.administrador.usuarios.Nombre : ''}</th>
-                                            <th>{venta.cliente? venta.cliente.usuario.ci:''}</th>
-                                            <th>{venta.cliente?venta.cliente.usuario.Nombre:''} {venta.cliente? venta.cliente.usuario.Apellido:''}</th>
+                                            <th>{venta.cliente ? venta.cliente.usuario.ci : ''}</th>
+                                            <th>{venta.cliente ? venta.cliente.usuario.Nombre : ''} {venta.cliente ? venta.cliente.usuario.Apellido : ''}</th>
                                             <th>{venta.HoraTransaccion}</th>
                                             <th>{venta.producto.PrecioVenta}</th>
                                             <th>
-                                                <button onClick={() => handleNotificacion('Confirmacion', 'Desea Eliminar la Transaccion', venta.id)} className='btn btn-outline-danger mx-2'>
+                                                <button onClick={() => handleDelete(venta.id)} className='btn btn-outline-danger mx-2'>
                                                     <i className='bi bi-trash'> </i>
                                                 </button>
                                             </th>
@@ -325,6 +333,16 @@ const Transaction_table = () => {
             <NewCompraModal
                 show={modalCompraShow}
                 onHide={() => setModalCompraShow(false)}
+            />
+            <ModalConfirmationV2
+                show={show}
+                setShow={setShow}
+                setFlag={setFlag}
+            />
+            <AlertDialog
+                open={openDialogAviso}
+                onHide={() => { setOpenDialogAviso(false) }}
+                mensaje={mensaje}
             />
 
         </Fragment>

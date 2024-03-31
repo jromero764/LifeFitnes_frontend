@@ -13,3 +13,10 @@ export const registrarNuevaTransaccion = (data) => {
         }
     })
 }
+export const eliminarTransaccionHTTP = (id) => {
+    return axios.delete(`${apiUrl}/Transacciones/${id}`, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+}
