@@ -26,7 +26,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-export default function ModalDelete({show, data, modalDelete, setModalDelete, setFlagDelete}) {
+export default function ModalDelete({show, data, setModalDelete, setFlagDelete}) {
   // const [open, setOpen] = useState(false);
 
   // const handleClickOpen = () => {
@@ -116,7 +116,7 @@ export default function ModalDelete({show, data, modalDelete, setModalDelete, se
         </IconButton>
         <DialogContent dividers>
           <Typography gutterBottom>
-            ¿Seguro que desea eliminar este usuario?
+            ¿Seguro que desea eliminar?
           </Typography>
         </DialogContent>
         <DialogActions>

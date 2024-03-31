@@ -29,7 +29,7 @@ const ModalAvisos = (props) =>{
    const apiUrl = process.env.REACT_APP_API_URL;
 //    var tipoNotificacion;
    if (props.tipo=='Confirmacion'){
-    tipoNotificacion=true;
+    setTipoNotificacion(true)
     
 }
 

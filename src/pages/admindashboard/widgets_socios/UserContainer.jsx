@@ -184,7 +184,7 @@ export default function UserContainer() {
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map(user => {
                                     return (
-                                        <TableRow onClick={() => { handleEditUser(user) }}   sx={{ '&:hover': { backgroundColor: '#f5f5f5' } }} key={user.id}>
+                                        <TableRow    sx={{ '&:hover': { backgroundColor: '#f5f5f5' } }} key={user.id}>
                                             <TableCell>
                                                 {user.ci}
                                             </TableCell>
