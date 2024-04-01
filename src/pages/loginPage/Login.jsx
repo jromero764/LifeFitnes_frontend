@@ -108,7 +108,7 @@ export default function Login() {
         <div className='center-login'>
             <img src={logo} alt="Logo_gym" className="py-3 img-fluid image_logo"></img>
             <div className='text-center'>
-                <h1 className='font-restaurant'>¡ BIENVENIDO !</h1>
+                <h1 className='font-restaurant'>¡ BIENVENIDOOOO !</h1>
             </div>
 
             {userDiv ? (
