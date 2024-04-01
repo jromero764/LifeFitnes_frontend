@@ -1,2 +1,0 @@
-cd SAVAGEFITNESSCENTER/
-npm start
