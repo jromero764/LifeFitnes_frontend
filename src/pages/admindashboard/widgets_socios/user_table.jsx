@@ -21,7 +21,8 @@ const User_table = () => {
     const [respuesta, setRespuesta] = useState();
     const [loading, setLoading] = useState(false);
 
-    const apiUrl = process.env.REACT_APP_API_URL;
+   const apiUrl = process.env.REACT_APP_API_URL;
+//   const apiUrl = 'https://backend.salvajelife-fitness.online'
     const peticionGet = async () => {
         const url = apiUrl + '/api/Usuarios/0';
         const response = fetch(url, {

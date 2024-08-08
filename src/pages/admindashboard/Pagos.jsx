@@ -9,6 +9,7 @@ import AlertDialog from "../../Utils/DialogAvisos";
 
 const Pagos = () => {
   const apiUrl = process.env.REACT_APP_API_URL;
+  //   const apiUrl = 'https://backend.salvajelife-fitness.online'
   const [inputCi, setValueCi] = useState();
   const [infosocio, setInfosocio] = useState();
   const [infopago, setInfopago] = useState();

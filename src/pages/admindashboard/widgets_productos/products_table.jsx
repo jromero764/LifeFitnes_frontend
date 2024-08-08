@@ -27,8 +27,13 @@ const Products_table = ({ respuesta, setRespuesta }) => {
   const [id, setId] = useState();
   const [metodo, setMetodo] = useState();
   const [productos, setProductos] = useState([]);
+  const [refresh, setRefresh] = useState(false)
   const apiUrl = process.env.REACT_APP_API_URL;
+  //   const apiUrl = 'https://backend.salvajelife-fitness.online'
   console.log(respuesta);
+  const handleRefresh = () => {
+    setRefresh(true)
+  }
   const handleGetHTTPProductos = () => {
     fetch(apiUrl + '/api/Productos/0', {
       method: 'GET',
@@ -93,6 +98,13 @@ const Products_table = ({ respuesta, setRespuesta }) => {
 
     fetchData();
   }, [flag]);
+  useEffect(() => {
+    if (refresh) {
+      handleGetHTTPProductos();
+      setRefresh(false)
+    }
+  }, [refresh])
+
   return (
     <div>
       <div className="row">
@@ -163,6 +175,7 @@ const Products_table = ({ respuesta, setRespuesta }) => {
         onHide={() => setModalShow(false)}
         id={id}
         metodo={metodo}
+        refresh={handleRefresh}
       />
 
       <ModalConfirmationV2

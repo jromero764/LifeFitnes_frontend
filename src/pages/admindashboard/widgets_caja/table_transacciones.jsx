@@ -10,6 +10,7 @@ import XLSX from 'sheetjs-style';
 const Transaction_table = () => {
     //-------------------------------------------------------------------INICIO DE VARIABLES------------------------------------------------------------------->
     const apiUrl = process.env.REACT_APP_API_URL;
+    //   const apiUrl = 'https://backend.salvajelife-fitness.online'
     const [ventas, setVentas] = useState([]);
     const [ventasDelDia, setVentasDelDia] = useState();
     const [compras, setCompras] = useState([]);
@@ -28,6 +29,7 @@ const Transaction_table = () => {
     const [flag, setFlag] = useState(false)
     const [mensaje, setMensaje] = useState(false)
     const [openDialogAviso, setOpenDialogAviso] = useState(false)
+    const [refresh, setRefresh] = useState(false)
     const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
     const fileExtension = '.xlsx';
     var date = new Date(); //Fecha actual
@@ -103,12 +105,16 @@ const Transaction_table = () => {
         setModalAvisos(true);
         setId(id);
     }
+
     const ExportarExcel = () => {
         const ws = XLSX.utils.json_to_sheet(ventas);
         const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
         const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
         const data = new Blob([excelBuffer], { type: fileType });
         FileSaver.saveAs(data, 'Ventas' + fileExtension);
+    }
+    const handleRefresh = () => {
+        setRefresh(true)
     }
     console.log(compras);
     //-------------------------------------------------------------------LOGICA DEL COMPONENTE------------------------------------------------------------------->
@@ -139,13 +145,22 @@ const Transaction_table = () => {
                 } finally {
                     setShow(false)
                     setFlag(false)
-                    window.location.reload()
+
                 }
             }
         };
 
         fetchData();
     }, [flag]);
+    useEffect(() => {
+        if (refresh) {
+            handleGetHTTPVentas(currentdate);
+            handleGetHTTPVentasDelDia(currentdate);
+            handleGetHTTPCompras(currentdate);
+            handleGetHTTPComprasDelDia(currentdate);
+        }
+    }, [refresh])
+
     return (
         <Fragment>
 
@@ -329,6 +344,7 @@ const Transaction_table = () => {
             <NewVentaModal
                 show={modalVentaShow}
                 onHide={() => setModalVentaShow(false)}
+                refresh={handleRefresh}
             />
             <NewCompraModal
                 show={modalCompraShow}
