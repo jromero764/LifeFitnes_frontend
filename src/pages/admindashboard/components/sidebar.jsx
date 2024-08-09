@@ -82,14 +82,16 @@ const Sidebar = () => {
 										<li>
 											<hr className='dropdown-divider'></hr>
 										</li>
-										<Link to='/'>
+										<Link
+											to='/'
+											className='dropdown-item'
+										>
 											<li>
-												<a
+												{/* <a
 													className='dropdown-item'
 													href='#'
-												>
-													Cerrar Sesion
-												</a>
+												></a> */}
+												Cerrar Sesion
 											</li>
 										</Link>
 									</ul>
