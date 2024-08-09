@@ -1,5 +1,6 @@
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import { Grid, Alert } from '@mui/material';
 import { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import ModalAvisos from '../../../Utils/ModalAvisos';
@@ -7,6 +8,7 @@ import { registrarNuevaTransaccion } from '../../../apiRest/TransaccionesHTTP';
 const NewVentaModal = (props) => {
   //-------------------------------------------------------------------INICIO DE VARIABLES------------------------------------------------------------------->    
   const apiUrl = process.env.REACT_APP_API_URL;
+//   const apiUrl = 'https://backend.salvajelife-fitness.online'
   const url = apiUrl + '/api/Productos/0';
   const [cantidadProducto, setCantidadProducto] = useState();
   const [selectProducto, setselectProducto] = useState();
@@ -19,7 +21,7 @@ const NewVentaModal = (props) => {
   const [modalAvisos, setModalAvisos] = useState(false);
   const [respuesta, setRespuesta] = useState();
   const [id, setId] = useState();
-
+  const [alert, setAlert] = useState(false)
   //-------------------------------------------------------------------DECLARACION DE METODOS------------------------------------------------------------------->
   const handleGetHTTPProductos = async () => {
     const response = fetch(url, {
@@ -31,6 +33,7 @@ const NewVentaModal = (props) => {
         setOpciones(response.data);
       });
   }
+  
   const handleRegister = async () => {
 
     const data = {
@@ -42,12 +45,24 @@ const NewVentaModal = (props) => {
     };
     try {
       let response = await registrarNuevaTransaccion(data)
-      handleNotificacion('Aviso', response.data.respuesta, '');
+      handleNotificacion('success');
     } catch (error) {
-      handleNotificacion('Aviso', 'Hubo un error del servidor', '');
+      handleNotificacion('error');
     }
 
   };
+  const handleNotificacion = (option) => {
+    if (option == 'success') {
+      setAlert(option)
+    } else {
+      setAlert(option)
+    }
+    setTimeout(() => {
+      setAlert(false)
+      props.refresh()
+      props.onHide()
+    }, 2500)
+  }
   const handleUpdateStock = () => {
 
     const productos_id = valueOption;
@@ -69,7 +84,7 @@ const NewVentaModal = (props) => {
       .then(data => {
         // Manipula los datos de respuesta
         if (data == 1) { handleRegister() }
-        handleNotificacion('aviso', data, '');
+        handleNotificacion('success');
       })
       .catch(error => {
         // Maneja cualquier error de la solicitud
@@ -77,12 +92,12 @@ const NewVentaModal = (props) => {
       });
 
   };
-  const handleNotificacion = (tipo, mensaje, id) => {
-    setTipoNotificacion(tipo);
-    setMensajeNotificacion(mensaje);
-    setModalAvisos(true);
-    setId(id);
-  }
+  // const handleNotificacion = (tipo, mensaje, id) => {
+  //   setTipoNotificacion(tipo);
+  //   setMensajeNotificacion(mensaje);
+  //   setModalAvisos(true);
+  //   setId(id);
+  // }
   //-------------------------------------------------------------------LOGICA DEL COMPONENTE------------------------------------------------------------------->
   useEffect(() => {
     handleGetHTTPProductos();
@@ -121,11 +136,24 @@ const NewVentaModal = (props) => {
           </div>
           <div className='col-9 mb-2'>
             <label htmlFor="floatingInputValue1">Opcional Cedula Cliente: </label>
-            <input type="text" className="form-control" id="floatingInputValue1"  onChange={(event) => setCedulaCliente(event.target.value)} />
+            <input type="text" className="form-control" id="floatingInputValue1" onChange={(event) => setCedulaCliente(event.target.value)} />
           </div>
         </form>
       </Modal.Body>
       <Modal.Footer>
+        <Grid>
+          {alert == 'success' && (
+            <Alert severity="success">
+              Se registra la venta
+            </Alert >
+          )
+          }
+          {alert == 'error' && (<Alert severity="warning">
+            Hubo un error
+          </Alert>)
+          }
+
+        </Grid>
         <Button variant="success" onClick={() => handleUpdateStock()}> + Nueva Venta </Button>
         <Button onClick={props.onHide}>Close</Button>
       </Modal.Footer>

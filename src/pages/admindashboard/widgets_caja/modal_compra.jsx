@@ -5,6 +5,7 @@ import Cookies from 'js-cookie';
 import ModalAvisos from '../../../Utils/ModalAvisos';
 const NewCompraModal = (props) => {
   const apiUrl = process.env.REACT_APP_API_URL;
+  //   const apiUrl = 'https://backend.salvajelife-fitness.online'
   const url = apiUrl + '/api/Productos/0';
   const [inputName, setValueName] = useState();
   const [selectProducto, setselectProducto] = useState();

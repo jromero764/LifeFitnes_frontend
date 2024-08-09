@@ -5,6 +5,7 @@ import { registarCuotaHTTP } from "../../../apiRest/IngresosHTTP";
 
 const Cards = (props) => {
     const apiUrl = process.env.REACT_APP_API_URL;
+    //   const apiUrl = 'https://backend.salvajelife-fitness.online'
     const [modalShow, setModalShow] = useState(false);
     const [titulo, settitulo] = useState();
     const [mensaje, setmensaje] = useState();

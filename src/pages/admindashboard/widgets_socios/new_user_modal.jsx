@@ -1,13 +1,17 @@
 import './widgets_socios.css';
 import Button from 'react-bootstrap/Button';
+import Alert from '@mui/material/Alert';
+import { Grid } from '@mui/material';
 import Modal from 'react-bootstrap/Modal';
 import { useState, useEffect } from 'react';
 import ModalAvisos from '../../../Utils/ModalAvisos';
 import CircularProgress from '@mui/material/CircularProgress';
 import { postUser, updateUser } from '../../../apiRest/UsuariosHTTP';
-
-const NewUserModal = ({ data, metodo, onHide, show }) => {
+import { useNavigate } from 'react-router-dom';
+const NewUserModal = ({ data, metodo, onHide, show, refresh }) => {
   const apiUrl = process.env.REACT_APP_API_URL;
+  //   const apiUrl = 'https://backend.salvajelife-fitness.online'
+  const navigate = useNavigate();
   const [inputCi, setValueCi] = useState();
   const [inputName, setValueName] = useState();
   const [inputApellido, setValueApellido] = useState();
@@ -23,11 +27,19 @@ const NewUserModal = ({ data, metodo, onHide, show }) => {
   const [modalAvisos, setModalAvisos] = useState(false);
   const [respuesta, setRespuesta] = useState();
   const [loading, setLoading] = useState(false);
-  const handleNotificacion = (tipo, mensaje) => {
-    setTipoNotificacion(tipo);
-    setMensajeNotificacion(mensaje);
-    setModalAvisos(true);
+  const [alert, setAlert] = useState(false)
 
+  const handleNotificacion = (option) => {
+    if (option == 'success') {
+      setAlert(option)
+    } else {
+      setAlert(option)
+    }
+    setTimeout(() => {
+      setAlert(false)
+      refresh()
+      onHide()
+    }, 2500)
   }
   const handleRegister = async () => {
     const data = {
@@ -44,11 +56,16 @@ const NewUserModal = ({ data, metodo, onHide, show }) => {
     try {
       const response = await postUser(data);
       console.log('La respuesta es:', response.data);
-      handleNotificacion('Aviso', 'Usuario creado con éxito');
+      handleNotificacion('success');
     } catch (error) {
+      handleNotificacion('error');
       console.log(`Hubo un error ${error}`);
     }
   };
+  const handleAction = () => {
+    navigate('')
+    console.log('ejecute el actions')
+  }
   const handleUpdate = async (id) => {
     console.log('que recibe', id)
     const data = {
@@ -66,8 +83,11 @@ const NewUserModal = ({ data, metodo, onHide, show }) => {
     try {
       const response = await updateUser(data);
       console.log('La respuesta es:', response.data);
-      handleNotificacion('Aviso', response.data.respuesta);
+      setAlert(false)
+      handleNotificacion('success');
+
     } catch (error) {
+      handleNotificacion('error');
       console.log(`Hubo un error ${error}`);
     }
 
@@ -84,6 +104,9 @@ const NewUserModal = ({ data, metodo, onHide, show }) => {
     setId(data.id)
     getvalueSexo(data.Sexo);
   }, [data])
+  useEffect(() => {
+    console.log('Alert', alert)
+  }, [alert])
 
 
   return (
@@ -100,7 +123,7 @@ const NewUserModal = ({ data, metodo, onHide, show }) => {
         mensaje={mensajeNotificacion}
         respuesta={respuesta}
         setRespuesta={setRespuesta}
-
+        onAction={handleAction}
       />
       {metodo ? (
         //-----------------------------------------------------------------SECCION UPDATE SOCIO--------------------------------------------------------------------------->
@@ -111,21 +134,21 @@ const NewUserModal = ({ data, metodo, onHide, show }) => {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <form className='row mb-3'>
-              <h4 className='text-uppercase mb-3'>Datos Personales </h4>
-              <div className='col-2 mb-2'>
+            <form className='mb-3 row'>
+              <h4 className='mb-3 text-uppercase'>Datos Personales </h4>
+              <div className='mb-2 col-2'>
                 <label htmlFor="floatingInputValue">Cédula</label>
                 <input type="text" className="form-control" id="floatingInputValue" value={inputCi ?? ''} onChange={(event) => setValueCi(event.target.value)} />
               </div>
-              <div className='col-5 mb-2'>
+              <div className='mb-2 col-5'>
                 <label htmlFor="floatingInputValue1">Nombre: </label>
                 <input type="text" className="form-control" id="floatingInputValue1" value={inputName ?? ''} onChange={(event) => setValueName(event.target.value)} />
               </div>
-              <div className='col-5 mb-2'>
+              <div className='mb-2 col-5'>
                 <label htmlFor="floatingInputValue2">Apellido:</label>
                 <input type="text" className="form-control" id="floatingInputValue2" value={inputApellido ?? ''} onChange={(event) => setValueApellido(event.target.value)} />
               </div>
-              <div className='col-4 mb-2'>
+              <div className='mb-2 col-4'>
                 <label htmlFor="floatingInputValue3">Sexo: </label>
                 <select className='form-select' name="" id="floatingInputValue3" value={selectSexo ?? ''} onChange={(event) => getvalueSexo(event.target.value)}>
                   <option value="">Seleccione Sexo</option>
@@ -134,22 +157,35 @@ const NewUserModal = ({ data, metodo, onHide, show }) => {
                   <option value="Sin definir">Sin Definir</option>
                 </select>
               </div>
-              <div className='col-4 mb-2'>
+              <div className='mb-2 col-4'>
                 <label htmlFor="floatingInputValue4">Fecha de Nacimiento: </label>
                 <input type="date" className="form-control" id="floatingInputValue4" value={inputFecha ?? ''} onChange={(event) => setValueFecha(event.target.value)} />
               </div>
-              <div className='col-6 mb-3'>
+              <div className='mb-3 col-6'>
                 <label htmlFor="floatingInputValue5">Correo: </label>
                 <input type="text" className="form-control" id="floatingInputValue5" value={inputCorreo ?? ''} onChange={(event) => setValueCorreo(event.target.value)} />
               </div>
-              <div className='col-6 mb-3'>
+              <div className='mb-3 col-6'>
                 <label htmlFor="floatingInputValue6">Telefono:</label>
                 <input type="text" className="form-control" id="floatingInputValue6" value={inputTelefono ?? ''} onChange={(event) => setValueTelefono(event.target.value)} />
               </div>
-              <hr className='text-secondary mb-3' />
+              <hr className='mb-3 text-secondary' />
             </form>
           </Modal.Body>
           <Modal.Footer>
+            <Grid>
+              {alert == 'success' && (
+                <Alert severity="success">
+                  Se actualiza el usuario
+                </Alert >
+              )
+              }
+              {alert == 'error' && (<Alert severity="warning">
+                Hubo un error
+              </Alert>)
+              }
+
+            </Grid>
             <Button variant="success" onClick={() => handleUpdate(data.id)}> Actualizar Datos </Button>
             <Button onClick={onHide}>Cerrar</Button>
           </Modal.Footer>
@@ -163,21 +199,21 @@ const NewUserModal = ({ data, metodo, onHide, show }) => {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <form className='row mb-3'>
-              <h4 className='text-uppercase mb-3'>Datos Personales </h4>
-              <div className='col-2 mb-2'>
+            <form className='mb-3 row'>
+              <h4 className='mb-3 text-uppercase'>Datos Personales </h4>
+              <div className='mb-2 col-2'>
                 <label htmlFor="floatingInputValue">Cédula</label>
                 <input type="text" className="form-control" id="floatingInputValue" placeholder='ej: 12345678' onChange={(event) => setValueCi(event.target.value)} />
               </div>
-              <div className='col-5 mb-2'>
+              <div className='mb-2 col-5'>
                 <label htmlFor="floatingInputValue1">Nombre: </label>
                 <input type="text" className="form-control" id="floatingInputValue1" placeholder='ej: Pepito' onChange={(event) => setValueName(event.target.value)} />
               </div>
-              <div className='col-5 mb-2'>
+              <div className='mb-2 col-5'>
                 <label htmlFor="floatingInputValue2">Apellido:</label>
                 <input type="text" className="form-control" id="floatingInputValue2" placeholder='ej: Rodriguez' onChange={(event) => setValueApellido(event.target.value)} />
               </div>
-              <div className='col-4 mb-2'>
+              <div className='mb-2 col-4'>
                 <label htmlFor="floatingInputValue3">Sexo: </label>
                 <select className='form-select' name="" id="floatingInputValue3" onChange={(event) => getvalueSexo(event.target.value)}>
                   <option value="">Seleccione Sexo</option>
@@ -186,19 +222,19 @@ const NewUserModal = ({ data, metodo, onHide, show }) => {
                   <option value="Sin definir">Sin Definir</option>
                 </select>
               </div>
-              <div className='col-4 mb-2'>
+              <div className='mb-2 col-4'>
                 <label htmlFor="floatingInputValue4">Fecha de Nacimiento: </label>
                 <input type="date" className="form-control" id="floatingInputValue4" onChange={(event) => setValueFecha(event.target.value)} />
               </div>
-              <div className='col-6 mb-3'>
+              <div className='mb-3 col-6'>
                 <label htmlFor="floatingInputValue5">Correo: </label>
                 <input type="text" className="form-control" id="floatingInputValue5" placeholder='ej: example@gmail.com' onChange={(event) => setValueCorreo(event.target.value)} />
               </div>
-              <div className='col-6 mb-3'>
+              <div className='mb-3 col-6'>
                 <label htmlFor="floatingInputValue6">Telefono:</label>
                 <input type="text" className="form-control" id="floatingInputValue6" placeholder='ej: 099999999' onChange={(event) => setValueTelefono(event.target.value)} />
               </div>
-              <hr className='text-secondary mb-3' />
+              <hr className='mb-3 text-secondary' />
               <div className='col-4'>
                 <label htmlFor="floatingInputValue7">Opcion:</label>
                 <select className='form-select' name="" id="floatingInputValue7" onChange={(event) => getValueOpt(event.target.value)}>
@@ -217,6 +253,19 @@ const NewUserModal = ({ data, metodo, onHide, show }) => {
             </form>
           </Modal.Body>
           <Modal.Footer>
+            <Grid>
+              {alert == 'success' && (
+                <Alert severity="success">
+                  Se crea el usuario
+                </Alert >
+              )
+              }
+              {alert == 'error' && (<Alert severity="warning">
+                Hubo un error
+              </Alert>)
+              }
+
+            </Grid>
             <Button variant="success" onClick={() => handleRegister()}> Crear nuevo </Button>
             <Button onClick={onHide}>Cerrar</Button>
           </Modal.Footer>

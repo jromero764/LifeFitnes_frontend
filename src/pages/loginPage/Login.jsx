@@ -1,11 +1,14 @@
 import './login_style.css';
 import React, { useState } from 'react';
 import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 const logo = require('../images/logo.png');
 
 
 export default function Login() {
+    const navigate = useNavigate(); 
     const apiUrl = process.env.REACT_APP_API_URL;
+//   const apiUrl = 'https://backend.salvajelife-fitness.online'
     const [ci, setCi] = useState('');
     const [pass, setPass] = useState('');
 
@@ -23,6 +26,7 @@ export default function Login() {
     var data = { "ci": parseInt(ci) };
     //Control de CI Utilizada
     const handleKeyPress = async (event) => {
+        console.log('API URL ',apiUrl)
         var respuesta;
         // Lógica para manejar la pulsación de teclas
         if (event.key == "Enter") {
@@ -89,13 +93,14 @@ export default function Login() {
 
     //Control para redirigir al usuario administrador
     const handlePassword = (response) => {
+        console.log('Ingreso a la parte de password')
         console.log(response)
         if (response.respuesta == 'Se valida el ingreso') {
-            console.log(response)
+            console.log('Se valida el ingreso',response)
             localStorage.setItem('idAdministrador', response.Usuario.id)
             localStorage.setItem('Perfil',response.Perfil)
             Cookies.set('Sesion', ci);
-               window.location = '/home'
+            navigate('home');
         } else {
             setError(response.respuesta);
             setVisibleDiv(true);
@@ -104,11 +109,13 @@ export default function Login() {
             }, 2000);
         }
     }
+   
+    
     return (
         <div className='center-login'>
             <img src={logo} alt="Logo_gym" className="py-3 img-fluid image_logo"></img>
             <div className='text-center'>
-                <h1 className='font-restaurant'>¡ BIENVENIDOOOO !</h1>
+                <h1 className='font-restaurant'>¡ BIENVENIDO !</h1>
             </div>
 
             {userDiv ? (

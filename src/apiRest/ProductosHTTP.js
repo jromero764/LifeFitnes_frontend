@@ -1,5 +1,6 @@
 import axios from "axios";
-const apiUrl = `${process.env.REACT_APP_API_URL}/api`;
+ // const apiUrl = process.env.REACT_APP_API_URL;
+   const apiUrl = 'https://backend.salvajelife-fitness.online'
 // return axios.post(`${API_URL}/v1/usuarioMonitoreado/asignacionFallidaSGSP`, data, {
 //     headers: {
 //         'Content-Type': 'application/json'
